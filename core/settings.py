@@ -26,7 +26,8 @@ SECRET_KEY = 'django-insecure-ll7+y&85(ze-64+z$_pw!!n=5gu4_lgdyn!xzq8kht$i4c=)-q
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+#Stripe listen
+ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
 
 # Application definition
@@ -41,6 +42,8 @@ INSTALLED_APPS = [
     'store',
     'cart',
     'users',
+    'payment',
+    'orders'
 ]
 
 MIDDLEWARE = [
@@ -133,10 +136,19 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+#Cart session ID
+CART_SESSION_ID = 'cart'
+
 #Custom user model
 AUTH_USER_MODEL = 'users.UserBase'
-LOGIN_DIRECT_URL = '/users/dashboard'
+LOGIN_REDIRECT_URL = '/users/dashboard'
 LOGIN_URL = '/users/login/'
 
-#email setting
+#Email setting
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+#Stripe payment
+PUBLISHABLE_KEY = 'pk_test_51Nf9XtC7XxoqCynJckNwLBKgOUrApNrcsjHzGGH4fp1noFjHnaAoSatE3lSmxfgIyWavTTBoNIZiVb3mb05SCdrH00WwEhasty'
+SECRET_KEY = 'sk_test_51Nf9XtC7XxoqCynJyx4R39qfOh7RRzalAsWF3CVfvBAGPRuoL5ll0Zfjaby7jI9MuXBGNqhTPUHDVx4Zu47pjvEF00IeqZNcgZ'
+STRIPE_ENDPOINT_SECRET = 'whsec_f6798e61c4e7f90ed4eb0127254da4494fe8c59730464781bd0233526da4e5a9'
+#stripe listen --forward-to localhost:8000/payment/webhook/
