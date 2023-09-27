@@ -1,15 +1,15 @@
-from django.contrib.auth import login
+from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.sites.shortcuts import get_current_site
 from django.http import HttpResponse
 from django.shortcuts import redirect, render
 from django.template.loader import render_to_string
-from django.utils.encoding import force_bytes, force_str
+from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 
-#from orders.views import user_orders
+from orders.views import user_orders
 
-from .forms import RegistrationForm
+from .forms import RegistrationForm, UserEditForm
 from .models import UserBase
 from .tokens import account_activation_token
 
@@ -41,15 +41,10 @@ def account_register(request):
 
 def account_activate(request, token, uidb64):
     try:
-        print(urlsafe_base64_decode(uidb64).decode())
         uid = urlsafe_base64_decode(uidb64).decode()
-        print('uid:', uid)
         user = UserBase.objects.get(pk=uid)
     except(TypeError, ValueError, OverflowError, UserBase.DoesNotExist):
         user = None
-    print(user)
-    print(token)
-    print(account_activation_token.check_token(user, token))
     if user is not None and account_activation_token.check_token(user, token):
         user.is_active = True
         user.save()
@@ -66,4 +61,27 @@ def dashboard(request):
         'users/user/dashboard.html',
         {'section': 'profile', 'orders': orders}
     )
+
+@login_required
+def edit_details(request):
+
+    if request.method == 'POST':
+        user_form = UserEditForm(instance=request.user, data=request.POST)
+
+        if user_form.is_valid():
+            user_form.save()
+    else:
+        user_form = UserEditForm(instance=request.user)
+
+    return render(request,
+                  'users/user/edit_details.html', {'user_form': user_form})
+
+@login_required
+def delete_user(request):
+    user = UserBase.objects.get(user_name=request.user)
+    user.is_active = False
+    user.save()
+    logout(request)
+    return redirect('users:delete_conf')
+
 
