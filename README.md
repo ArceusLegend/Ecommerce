@@ -70,7 +70,10 @@ For this project to work properly, before starting the server, you will need to 
   
   Finally, activate stripe with `stripe listen --forward-to localhost:8000/payment/webhook/`.
 
-  Note: the port number 8000 is the default port that Django uses to run the server. If you're using a different port number, you should replace 8000 with that instead. You can test that it works by going to the payment page and using the test card numbers in stripe.txt. *No auth* means stripe will simulate a successful payment without the need to authenticate the payment, *Auth* means Stripe will generate a pop up simulating an event that requires authentication to proceed, and *Error* means that stripe will simulate a failed authentication event.
+  Note: the port number 8000 is the default port that Django uses to run the server. If you're using a different port number, you should replace 8000 with that instead. You can test that it works by going to the payment page and using the test card numbers in stripe.txt.
+  - *No auth* means stripe will simulate a successful payment without the need to authenticate the payment,
+  - *Auth* means Stripe will generate a pop up simulating an event that requires authentication to proceed
+  - *Error* means that stripe will simulate a failed authentication event.
 
 # Run the server
-Your setup is done! You can now activate the server by going to the console and using the command `python -m manage.py runserver`. If you want to add products to the store, you can go to 127.0.0.1:8000/admin, and manage your database from there. 
+Your setup is done! If you want to use the project in development mode, you can simply go to the console and use the runserver command like this: `py manage.py runserver`, and look at it in your browser by going to 127.0.0.1:8000 (or whatewver port number you want to use instead of 8000). If you wish to deploy it, there are several steps you must take first to ensure that it runs smoothly in a production environment, so in the next section we'll look at first how to change your database engine if you don't want to use SQLite3 in production, and how to run with a script that's a little more sophisticated than `runserver`.
