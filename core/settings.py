@@ -15,6 +15,8 @@ import os
 from dotenv import load_dotenv
 from pathlib import Path
 
+from django.core.exceptions import ImproperlyConfigured
+
 # Load environmental variables from .env
 load_dotenv()
 
@@ -26,12 +28,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.getenv('SECRET_KEY_D')
+SECRET_KEY = os.getenv('SECRET_KEY_D', '')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+# False by default, change it in .env
+DEBUG = os.getenv('DEBUG', 'false').lower() == 'true'
 
-#Stripe listen
+# Must have a valid value if DEBUG = False
 ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
 
@@ -87,13 +90,54 @@ WSGI_APPLICATION = 'core.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
+DATABASE_ENGINE = os.getenv('DATABASE_ENGINE', 'sqlite3').lower()  # Supports 'sqlite3', 'postgres' and mysql
 
+if DATABASE_ENGINE == 'sqlite3':
+    DATABASE_LOCATION = os.getenv("DB_LOCATION", "db.sqlite3")  # Always relative to project dir
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / DATABASE_LOCATION,
+        }
+    }
+
+elif DATABASE_ENGINE == 'postgres':
+    DB_SERVER = os.getenv("DB_SERVER", "127.0.0.1")
+    DB_PORT = os.getenv("DB_PORT", "5432")
+    DB_NAME = os.getenv("DB_NAME", "postdb")
+    DB_USER = os.getenv("DB_USERNAME", "admin")
+    DB_PASS = os.getenv("DB_PASSWORD", "1q2w3e4r")
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.postgresql",
+            "HOST": DB_SERVER,
+            "PORT": DB_PORT,
+            "NAME": DB_NAME,
+            "USER": DB_USER,
+            "PASSWORD": DB_PASS,
+        }
+    }
+
+elif DATABASE_ENGINE == 'mysql':
+    DB_SERVER = os.getenv("DB_SERVER", "127.0.0.1")
+    DB_PORT = os.getenv("DB_PORT", "3306")
+    DB_NAME = os.getenv("DB_NAME", "mysqldb")
+    DB_USER = os.getenv("DB_USERNAME", "admin")
+    DB_PASS = os.getenv("DB_PASSWORD", "1q2w3e4r")
+
+    DATABASES= {
+        "default": {
+            "ENGINE": "django.db.backends.mysql",
+            "HOST": DB_SERVER,
+            "PORT": DB_PORT,
+            "NAME": DB_NAME,
+            "USER": DB_USER,
+            "PASSWORD": DB_PASS,
+        }
+    }
+
+else:
+    raise ImproperlyConfigured("Unknown database engine '{!s}'".format(DATABASE_ENGINE))
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
