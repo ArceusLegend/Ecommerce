@@ -76,4 +76,31 @@ For this project to work properly, before starting the server, you will need to 
   - *Error* means that stripe will simulate a failed authentication event.
 
 # Run the server
-Your setup is done! If you want to use the project in development mode, you can simply go to the console and use the runserver command like this: `py manage.py runserver`, and look at it in your browser by going to 127.0.0.1:8000 (or whatewver port number you want to use instead of 8000). If you wish to deploy it, there are several steps you must take first to ensure that it runs smoothly in a production environment, so in the next section we'll look at first how to change your database engine if you don't want to use SQLite3 in production, and how to run with a script that's a little more sophisticated than `runserver`.
+
+Your setup is done! If you want to use the project in development mode, you can simply go to the console and use the runserver command like this: `py manage.py runserver`, and look at it in your browser by going to 127.0.0.1:8000 (or whatewver port number you want to use instead of 8000). If you wish to deploy it, there are several steps you must take first to ensure that it runs smoothly in a production environment, so in the next section we'll look at first how to change your database engine if you don't want to use SQLite3 in production, and how to deploy the project.
+
+# Deployment
+
+To deploy the project in a production environment, you can go through the following steps, and consult the documentation [here](https://docs.djangoproject.com/en/4.2/howto/deployment/) if you want.
+
+1) Secret key
+
+   When a Django project is initialized, you can find a randomized key assigned to a SECRET_KEY variable in settings.py. *DO NOT USE THIS ANYWHERE BESIDES PRODUCTION AND DO NOT COMMIT IT ANYWHERE IN SOURCE CONTROL*. It is imparative to keep this key a secret for security reasons. By default, in this project, it is set to an empty string, but you should go to your .env and set it to a large, randomized value. As an extra security measure, Django 4.1 introduced [Secret Key Fallbacks](https://docs.djangoproject.com/en/4.2/ref/settings/#std-setting-SECRET_KEY_FALLBACKS) to assist users who may want to introduce SECRET_KEY rotations
+
+3) Database
+   
+   When a project is initialized, Django uses SQLite by default. While not a bad choice for a development environment, some may prefer to use a different databse engine. PostgreSQL (generally considered the best suited for Django), MySQL, etc. The default database in SQLite3, however you can change that by going to your .env file, creating a varible called DATABASE_ENGINE, and assigning it either the string 'postgres' if you want to use PostgreSQL, or 'mysql'if you want to use MySQL.
+
+   Note: If you are not using SQLite, there are some additional steps required to take.
+
+   For non-SQLite databases, Django required additional parameters to connect to them. In this project I've defined several parameters for these. You can see the default values in settings.py, and you can change them in the .env file if you wish. There are additional parameters that can be passed that are all listed in the official documentation [here](https://docs.djangoproject.com/en/4.2/ref/settings/#databases). 
+   
+   Additionally, Django has built-in support for SQLite3, PostgreSQL, MySQL, and Oracle DB. If you don't want to use any of the above options, you can still use another fully-qualified database by setting the "ENGINE" option to a valid path (ie mypackage.backends.whatever).
+
+4) Ensure that DEBUG is set to False
+
+   Enabling the DEBUG option is great for your development environment, but not so much for production. If there is an error somewhere that causes a traceback to occur, you are given a lot of potentially sensitive information about your code, and you certainly don't want that leaking to any unwanted parties. It is set to False by default in settings.py, but you can enable it again in your .env file.
+
+5) Allowed hosts
+   -- to be continued --
+   
