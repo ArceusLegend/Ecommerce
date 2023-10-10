@@ -2,7 +2,7 @@
 A Django project to build an online bookstore
 
 # Set up
-For this project to work properly, before starting the server, you will need to first create a virtual environment and then download all the assets listed in requirements.txt. Afterwards you'll need to make and run some migrations for Django to build a database (by default in SQLite3), and then enable stripe for payments to work.
+For this project to work properly, before starting the server, you will need to first create a virtual environment and then download all the assets listed in requirements.txt. Afterwards you'll need to make and run some migrations for Django to build a database (by default in SQLite3), make a .env file for any secret keys you don't want in the actual code, and then finally enable stripe for payments to work.
 
 - **Creating a virtual environment**
 
@@ -31,7 +31,27 @@ For this project to work properly, before starting the server, you will need to 
   Finally, to apply the migration changes, go to your console and run the command `python -m manage.py migrate`. This will create a database for your data to be stored.
 
   **YOUR DATABASE MAY CONTAIN SENSITIVE INFORMATION, SO NEVER SHARE IT WITH ANYONE YOU DON'T TRUST**
+- **Create .env file**
 
+  You may find yourself using some secret keys throught development. Ideally you shouldn't use any of these keys in your code, and this is where environment variables come in. Go to the root directory of the project, and create a new file simply called .env. Here you can safely add any variables you want to be kept hidden from your code, like this:
+  ```
+  # You can also add comments like this
+  SECRET1 = ... # Add your key here
+  SECRET2 = ... # Add some other key
+  ```
+  Among the requirements, you'll find a package called python_dotenv, and this is what we'll use to import all the variables in the .env to to our script. Like this:
+  
+  ```
+  from dotenv import load_dotenv
+
+  load_dotenv()
+  ```
+
+  And like that, all the variables in the .env are available in the script. To use them, call the `os.getenv()` method, passing as a paramater the name of the variable as a string, like this:
+  ```
+  SECRET1 = os.getenv('SECRET1') # Pass SECRET1 from .env to this
+  SECRET2 = os.getenv('SECRET2') # Pass SECRET2 from .env to this
+  ```
 - **Enable stripe**
 
   Payments are processed using Stripe. You will need to make an account on Stripe first by going [here](https://dashboard.stripe.com/register), in order to get your own API keys. Once your account is created, you will need to activate it, and then go to your dashboard. In the middle of the page, click on "API keys for developers".
