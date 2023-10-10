@@ -11,7 +11,12 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 import os
+
+from dotenv import load_dotenv
 from pathlib import Path
+
+# Load environmental variables from .env
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -21,7 +26,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-ll7+y&85(ze-64+z$_pw!!n=5gu4_lgdyn!xzq8kht$i4c=)-q'
+SECRET_KEY = os.getenv('SECRET_KEY_D')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -148,7 +153,7 @@ LOGIN_URL = '/users/login/'
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 #Stripe payment
-PUBLISHABLE_KEY = ''
-SECRET_KEY = ''
-STRIPE_ENDPOINT_SECRET = ''
+PUBLISHABLE_KEY = os.getenv('PUBLISHABLE_KEY')
+SECRET_KEY = os.getenv('SECRET_KEY_S')
+STRIPE_ENDPOINT_SECRET = os.getenv('STRIPE_ENDPOINT_SECRET')
 #stripe listen --forward-to localhost:8000/payment/webhook/
