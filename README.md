@@ -144,3 +144,12 @@ To deploy the project in a production environment, you can go through the follow
 
    This project sends emails during the registration process, containing a link that a user needs to click on to activate their account. Django sends these emails from webmaster@localhost and root@localhost by default, although some email service providers don't accept these emails. To use different sender addresses, modify the `DEFAULT_FROM_EMAIL` and `SERVER_EMAIL` settings to your liking
 
+6) **Final steps**
+
+   There are several other items in the official documentation linked at the start of this section that you should go through to ensure that your project is ready for deployment - the ones mentioned here are, in my opinion, the most important ones for this type of project. Once you're done going through the checklist, you have but a couple more steps to deploy the project to production.
+
+   - Run `py manage.py collectstatic` in the console. As Django doesn't serve static files in production, you will need to copy them all and put them in a new folder for your web server to access them instead. This is what `collectstatic` does automatically, and you can change the destination in the `STATIC_ROOT` variable in settings.py. By default, it'll be a new folder called 'assets' in the root directory of your project
+  
+   - Select a deployment method. Django currently supports two interfaces: [WSGI](https://wsgi.readthedocs.io/en/latest/) and [ASGI](https://asgi.readthedocs.io/en/latest/). A quick and easy method to deploy this project is Gunicorn but, as this project was built on a windows machine, this project uses Waitress instead, which is also a quick and easy to use method of deployment. Simply go to serve.py the project's root directory, and run the script. Waitress is now hosting your project! Do note, that as this a WSGI interface, you will have to kill the server with CTRL+C to reflect any changes within the code on your production environment.
+  
+   - If you are using a Unix machine, and you want to use Gunicorn, you can simply run the command `pip install gunicorn` on your console, and then use the command `gunicorn myproject.wsgi` from the same directory as manage.py. This will start one process running one thread listening on 127.0.0.1:8000. You read the [deployment documentation](https://docs.gunicorn.org/en/latest/deploy.html) for extra details.
