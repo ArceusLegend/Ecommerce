@@ -6,11 +6,12 @@ A Django project to build an online bookstore. Build with Django, Bootstrap, and
 This is a quick rundown of necessary steps to set up the project for both development and production. This dedicated for the more experienced developers, and they will be described in more detail below.
 
 - Create a virtual environment (`py -m venv ./venv` to create a new folder on the current directory called venv and then build the env there)
-- Enable it the virtual environment (if using the above example, run `venv/Scripts/Activate`)
-- Download all the packages listed in requirements.txt (`pip install -r requirements.txt)
+- Enable the virtual environment (if using the above example, run `venv/Scripts/Activate`)
+- Download all the packages listed in requirements.txt (`pip install -r requirements.txt`)
 - Create .env file in the project's root directory to store envvars
-- Choose a database (SQLite by defaults, has built in support for PostgreSQL and MySQL but it's possible to add support for more in settings.py)
-- Create migrations (`py manage.py makemigrations`), and then run them (`py manage.py migrate`) to create a database in the engine of your choosing with tables mapped by the models in the code.
+- Create a new envvar called `SECRET_KEY_D`. This is the Django SECRET_KEY value that you'll find in settings.py. Make sure it's a large, randomized value.
+- Choose a database by creating a new envvar called `DATABASE_ENGINE`. By default it's SQLite and you don't need to change anything if that's what you want. You can assign 'postgres' to the variable if you want to use PostgreSQL, 'mysql' if you want use MySQL, or add support for another engine in settings.py and assigning a correlated string to the envvar.
+- Run the migrations (`py manage.py migrate`) to create a database in the engine of your choosing with tables mapped by the models in the code. The migrations should already be provided with the code.
 - This project uses Stripe to process payments. To get it work, make an account [here](https://dashboard.stripe.com/register), navigate to your dashboard, and fetch the API keys and webhook secret key. Add them as envvars in your .env file.
 - The project is now ready to work in development mode. To deploy it in production mode, first go through [this](https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/) checklist to ensure it's safe to do so. Once that is done, you can use whatever method you want to deploy it. This project uses Waitress, so if you want to deploy it with this package you can simply run the serve.py script
 
@@ -33,53 +34,39 @@ For this project to work properly, before starting the server, you will need to 
 
   In requirements.txt you'll find a list of required assets and libraries that need to be downoaded first in order for the project to work correctly. You can install everything in that file to your current working environment (in this case the venv) by going to the console and writing `pip install -r requirements.txt`
 
-- **Create migrations**
+- **Create .env file**
+
+  You may find yourself using some secret keys throught development. Ideally you shouldn't use any of these keys in your code, and this is where environment variables come in handy. You will need to make a .env file on the same level as manage.py. This project uses python-dotenv to import any variables you make there into settings.py, and you can access them with the `os.getenv()` method.
+
+- **The Django secret key**
+
+  The first envvar you should add is the Django secret key in settings.py. By default, it'll be an empty string and the project will NOT work if it isn't changed. The envvar should be called 'SECRET_KEY_D' to help distinguish it from other secret key variables, but it can be called whatever you want, as long as you change what variable the `getenv()` method looks for to match the new envvar name. For security purposes, the value should be a large, randomized value (for example 'django-insecure-sdawqe1-qfdacq3f(&8878&!_=&78)'
+
+- **Select a database engine**
+
+  The second envvar you should add is the name of the database engine you want. Django has integrate support SQLite, PostgreSQL, MySQL, and Oracle. The default database in this project is SQLite, but it also supports PostgreSQL and MySQL. You can switch to either option by creating an envvar called `DATABASE_ENGINE`, and assigning it either 'postgres' to use PostgreSQL, or 'mysql' to use MySQL. If you want to add another option, you can use any fully-qualified package path in settings.py by following the documentation [here](https://docs.djangoproject.com/en/4.2/ref/settings/#databases). 
+
+  It is recommended to use the same database engines for both development and production modes. Additionally, since your database may contain sensitive information like passwords, addresses, and general billing information, avoid sharing in version control and with parties that you don't fully trust.
+
+- **Migrations**
 
   Django uses what's called *models* to create a single, definitive source of information about your data. They contain the essential fields and behaviors of the data you’re storing, and generally map to a single database table.
 
-  This project already contains the finished models that it needs, however you first need to create the migrations required to create the database in the first place. For that, go to your console and write `python -m manage.py makemigrations`. This will create the migrations required for a database to be created and for the models to map to said database. By default, the database created is an SQLite3 database, but you .
-
-- **Run the migrations**
-  
-  Finally, to apply the migration changes, go to your console and run the command `python -m manage.py migrate`. This will create a database for your data to be stored.
-
-  **YOUR DATABASE MAY CONTAIN SENSITIVE INFORMATION, SO NEVER SHARE IT WITH ANYONE YOU DON'T TRUST**
-
-- **Create .env file**
-
-  You may find yourself using some secret keys throught development. Ideally you shouldn't use any of these keys in your code, and this is where environment variables come in. Go to the root directory of the project, and create a new file simply called .env. Here you can safely add any variables you want to be kept hidden from your code, like this:
-  ```
-  # You can also add comments like this
-  SECRET1 = ... # Add your key here
-  SECRET2 = ... # Add some other key
-  ```
-  Among the requirements, you'll find a package called python_dotenv, and this is what we'll use to import all the variables in the .env to to our script. Like this:
-  
-  ```
-  from dotenv import load_dotenv
-
-  load_dotenv()
-  ```
-
-  And like that, all the variables in the .env are available in the script. To use them, call the `os.getenv()` method, passing as a paramater the name of the variable as a string, like this:
-  ```
-  SECRET1 = os.getenv('SECRET1') # Pass SECRET1 from .env to this
-  SECRET2 = os.getenv('SECRET2') # Pass SECRET2 from .env to this
-  ```
+  This project already contains the finished models that it needs, as well as the migration files to make a new database. Simply go to your console and use the command `py manage.py migrate`, and Django will make a new Database for you in whatever engine you chose.
 
 - **Enable stripe**
 
   Payments are processed using Stripe. You will need to make an account on Stripe first by going [here](https://dashboard.stripe.com/register), in order to get your own API keys. Once your account is created, you will need to activate it, and then go to your dashboard. In the middle of the page, click on "API keys for developers".
   
-  ![εικόνα](https://github.com/ArceusLegend/Ecommerce/assets/109414442/1a767a99-9156-40cc-a921-aa99aab07ca9)
+  ![Image of stripe dashboard page](https://github.com/ArceusLegend/Ecommerce/assets/109414442/1a767a99-9156-40cc-a921-aa99aab07ca9)
 
   Now go to the project, and navigate to core/settings.py Scroll all the way to the bottom to find the `PUBLISHABLE_KEY`, `SECRET_KEY`, and `STRIPE_ENDPOINT_SECRET` constants. Replace these with your own keys; the publishable and secret keys can be found in the API keys tab:
   
-  ![εικόνα](https://github.com/ArceusLegend/Ecommerce/assets/109414442/e08eb6f2-4c42-432d-ab05-9fa63084b2a6)
+  ![Image of API Keys tab in developer page](https://github.com/ArceusLegend/Ecommerce/assets/109414442/e08eb6f2-4c42-432d-ab05-9fa63084b2a6)
 
   You can then find the endpoint secret by going to the "Webhooks" tab, and then clicking on either button you want:
 
-  ![εικόνα](https://github.com/ArceusLegend/Ecommerce/assets/109414442/938a13d3-c4c4-424f-846e-38f129f9bde5)
+  ![Image of clickable buttons in the Webhooks tabs](https://github.com/ArceusLegend/Ecommerce/assets/109414442/938a13d3-c4c4-424f-846e-38f129f9bde5)
 
   Both buttons will take you to the same page, which will include a sample code block on the right side of your screen. Go to line 25, and copy the `endpoint_secret` key. This is your STRIPE_ENDPOINT_SECRET.
   
@@ -116,23 +103,11 @@ To deploy the project in a production environment, you can go through the follow
 
    As an extra security feature, you can also set up the web server in front of Django to respond with a static error page or ignore requests for incorrect hosts instead of forwarding the request to Django. This way you’ll avoid spurious errors in your Django logs (or emails if you have error reporting configured that way).
 
-4) **Database**
-   
-   When a project is initialized, Django uses SQLite by default. While not a bad choice for a development environment, some may prefer to use a different databse engine. PostgreSQL (generally considered the best suited for Django), MySQL, etc. The default database in SQLite3, however you can change that by going to your .env file, creating a varible called DATABASE_ENGINE, and assigning it either the string 'postgres' if you want to use PostgreSQL, or 'mysql'if you want to use MySQL.
-
-   Note: If you are not using SQLite, there are some additional steps required to take.
-
-   For non-SQLite databases, Django required additional parameters to connect to them. In this project I've defined several parameters for these. You can see the default values in settings.py, and you can change them in the .env file if you wish. There are additional parameters that can be passed that are all listed in the official documentation [here](https://docs.djangoproject.com/en/4.2/ref/settings/#databases). 
-   
-   Additionally, Django has built-in support for SQLite3, PostgreSQL, MySQL, and Oracle DB. If you don't want to use any of the above options, you can still use another fully-qualified database by setting the "ENGINE" option to a valid path (ie mypackage.backends.whatever).
-
-   And as a bit of an extra tip, ensure that your database engine is the same in both production AND development. There may be issues translating changes in your development environment to your production one otherwise. And also, always backup your databases!
-
-5) **Email settings**
+4) **Email settings**
 
    This project sends emails during the registration process, containing a link that a user needs to click on to activate their account. Django sends these emails from webmaster@localhost and root@localhost by default, although some email service providers don't accept these emails. To use different sender addresses, modify the `DEFAULT_FROM_EMAIL` and `SERVER_EMAIL` settings to your liking
 
-6) **Final steps**
+5) **Final steps**
 
    There are several other items in the official documentation linked at the start of this section that you should go through to ensure that your project is ready for deployment - the ones mentioned here are, in my opinion, the most important ones for this type of project. Once you're done going through the checklist, you have but a couple more steps to deploy the project to production.
 
