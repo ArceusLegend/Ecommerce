@@ -5,15 +5,15 @@ A Django project to build an online bookstore. Build with Django, Bootstrap, and
 
 This is a quick rundown of necessary steps to set up the project for both development and production. This dedicated for the more experienced developers, and they will be described in more detail below.
 
-- Create a virtual environment (`py -m venv ./venv` to create a new folder on the current directory called venv and then build the env there)
+- Create a virtual environment (`python -m venv ./venv` to create a new folder on the current directory called venv and then build the env there)
 - Enable the virtual environment (if using the above example, run `venv/Scripts/Activate`)
 - Download all the packages listed in requirements.txt (`pip install -r requirements.txt`)
 - Create .env file in the project's root directory to store envvars
 - Create a new envvar called `SECRET_KEY_D`. This is the Django SECRET_KEY value that you'll find in settings.py. Make sure it's a large, randomized value.
 - Choose a database by creating a new envvar called `DATABASE_ENGINE`. By default it's SQLite and you don't need to change anything if that's what you want. You can assign 'postgres' to the variable if you want to use PostgreSQL, 'mysql' if you want use MySQL, or add support for another engine in settings.py and assigning a correlated string to the envvar.
-- Run the migrations (`py manage.py migrate`) to create a database in the engine of your choosing with tables mapped by the models in the code. The migrations should already be provided with the code.
+- Run the migrations (`python -m manage.py migrate`) to create a database in the engine of your choosing with tables mapped by the models in the code. The migrations should already be provided with the code.
 - This project uses Stripe to process payments. To get it work, make an account [here](https://dashboard.stripe.com/register), navigate to your dashboard, and fetch the API keys and webhook secret key. Add them as envvars in your .env file.
-- The project is now ready to work in development mode. To deploy it in production mode, first go through [this](https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/) checklist to ensure it's safe to do so. Once that is done, you can use whatever method you want to deploy it. This project uses Waitress, so if you want to deploy it with this package you can simply run the serve.py script
+- The project is now ready to work in development mode. To deploy it in production mode, first go through [this](https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/) checklist to ensure it's safe to do so. Once that is done, you can use whatever method you want to deploy it. This project uses Waitress, so if you want to deploy it with this package you can simply run the serve.script
 
 # Set up
 For this project to work properly, before starting the server, you will need to first create a virtual environment and then download all the assets listed in requirements.txt. Afterwards you'll need to make and run some migrations for Django to build a database (by default in SQLite3), make a .env file for any secret keys you don't want in the actual code, and then finally enable stripe for payments to work. Optionally, you can also relocate the media folder elsewhere.
@@ -52,7 +52,7 @@ For this project to work properly, before starting the server, you will need to 
 
   Django uses what's called *models* to create a single, definitive source of information about your data. They contain the essential fields and behaviors of the data you’re storing, and generally map to a single database table.
 
-  This project already contains the finished models that it needs, as well as the migration files to make a new database. Simply go to your console and use the command `py manage.py migrate`, and Django will make a new Database for you in whatever engine you chose.
+  This project already contains the finished models that it needs, as well as the migration files to make a new database. Simply go to your console and use the command `python -m manage.py migrate`, and Django will make a new Database for you in whatever engine you chose.
 
 - **Enable stripe**
 
@@ -83,7 +83,7 @@ For this project to work properly, before starting the server, you will need to 
 
 # Run the server
 
-Your setup is done! If you want to use the project in development mode, you can simply go to the console and use the runserver command like this: `py manage.py runserver`, and look at it in your browser by going to 127.0.0.1:8000 (or whatewver port number you want to use instead of 8000). If you wish to deploy it, there are several steps you must take first to ensure that it runs smoothly in a production environment, so in the next section we'll look at first how to change your database engine if you don't want to use SQLite3 in production, and how to deploy the project.
+Your setup is done! If you want to use the project in development mode, you can simply go to the console and use the runserver command like this: `python -m manage.py runserver`, and look at it in your browser by going to 127.0.0.1:8000 (or whatewver port number you want to use instead of 8000). If you wish to deploy it, there are several steps you must take first to ensure that it runs smoothly in a production environment, so in the next section we'll look at first how to change your database engine if you don't want to use SQLite3 in production, and how to deploy the project.
 
 # Deployment
 
@@ -111,7 +111,7 @@ To deploy the project in a production environment, you can go through the follow
 
    There are several other items in the official documentation linked at the start of this section that you should go through to ensure that your project is ready for deployment - the ones mentioned here are, in my opinion, the most important ones for this type of project. Once you're done going through the checklist, you have but a couple more steps to deploy the project to production.
 
-   - Run `py manage.py collectstatic` in the console. As Django doesn't serve static files in production, you will need to copy them all and put them in a new folder for your web server to access them instead. This is what `collectstatic` does automatically, and you can change the destination in the `STATIC_ROOT` variable in settings.py. By default, it'll be a new folder called 'assets' in the root directory of your project
+   - Run `python -m manage.py collectstatic` in the console. As Django doesn't serve static files in production, you will need to copy them all and put them in a new folder for your web server to access them instead. This is what `collectstatic` does automatically, and you can change the destination in the `STATIC_ROOT` variable in settings.py. By default, it'll be a new folder called 'assets' in the root directory of your project
   
    - Select a deployment method. Django currently supports two interfaces: [WSGI](https://wsgi.readthedocs.io/en/latest/) and [ASGI](https://asgi.readthedocs.io/en/latest/). A quick and easy method to deploy this project is Gunicorn but, as this project was built on a windows machine, this project uses Waitress instead, which is also a quick and easy to use method of deployment. Simply go to serve.py the project's root directory, and run the script. Waitress is now hosting your project! Do note, that as this a WSGI interface, you will have to kill the server with CTRL+C to reflect any changes within the code on your production environment.
   
