@@ -13,17 +13,18 @@ from .forms import RegistrationForm, UserEditForm
 from .models import UserBase
 from .tokens import account_activation_token
 
+
 def account_register(request):
-    
+
     if request.method == 'POST':
         registerForm = RegistrationForm(request.POST)
         if registerForm.is_valid():
             user = registerForm.save(commit=False)
             user.email = registerForm.cleaned_data['email']
             user.set_password(registerForm.cleaned_data['password'])
-            user.is_active=False
+            user.is_active = False
             user.save()
-            #E-mail setup
+            # E-mail setup
             current_site = get_current_site(request)
             subject = 'Activate your Account'
             message = render_to_string('users/registration/account_activation_email.html', {
@@ -34,16 +35,17 @@ def account_register(request):
             })
             user.email_user(subject=subject, message=message)
             return HttpResponse('registered succesfully and activation sent')
-        
+
     else:
         registerForm = RegistrationForm()
     return render(request, 'users/registration/register.html', {'form': registerForm})
+
 
 def account_activate(request, token, uidb64):
     try:
         uid = urlsafe_base64_decode(uidb64).decode()
         user = UserBase.objects.get(pk=uid)
-    except(TypeError, ValueError, OverflowError, UserBase.DoesNotExist):
+    except (TypeError, ValueError, OverflowError, UserBase.DoesNotExist):
         user = None
     if user is not None and account_activation_token.check_token(user, token):
         user.is_active = True
@@ -53,6 +55,7 @@ def account_activate(request, token, uidb64):
     else:
         return render(request, 'users/registration/activation_invalid.html')
 
+
 @login_required
 def dashboard(request):
     orders = user_orders(request)
@@ -61,6 +64,7 @@ def dashboard(request):
         'users/user/dashboard.html',
         {'section': 'profile', 'orders': orders}
     )
+
 
 @login_required
 def edit_details(request):
@@ -76,6 +80,7 @@ def edit_details(request):
     return render(request,
                   'users/user/edit_details.html', {'user_form': user_form})
 
+
 @login_required
 def delete_user(request):
     user = UserBase.objects.get(user_name=request.user)
@@ -83,5 +88,3 @@ def delete_user(request):
     user.save()
     logout(request)
     return redirect('users:delete_conf')
-
-

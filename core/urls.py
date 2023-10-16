@@ -21,12 +21,12 @@ from django.urls import include, path
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('store.urls', namespace = 'store')),
-    path('cart/', include('cart.urls', namespace = 'cart')),
-    path('users/', include('users.urls', namespace = 'users')),
-    path('payment/', include('payment.urls', namespace = 'payment')),
-    path('orders/', include('orders.urls', namespace = 'orders'))
+    path('', include('store.urls', namespace='store')),
+    path('cart/', include('cart.urls', namespace='cart')),
+    path('users/', include('users.urls', namespace='users')),
+    path('payment/', include('payment.urls', namespace='payment')),
+    path('orders/', include('orders.urls', namespace='orders'))
 ]
 
 if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

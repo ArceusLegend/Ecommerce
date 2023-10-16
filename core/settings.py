@@ -11,11 +11,10 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 import os
-
-from dotenv import load_dotenv
 from pathlib import Path
 
 from django.core.exceptions import ImproperlyConfigured
+from dotenv import load_dotenv
 
 # Load environmental variables from .env
 load_dotenv()
@@ -126,7 +125,7 @@ elif DATABASE_ENGINE == 'mysql':
     DB_USER = os.getenv("DB_USERNAME", "admin")
     DB_PASS = os.getenv("DB_PASSWORD", "1q2w3e4r")
 
-    DATABASES= {
+    DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.mysql",
             "HOST": DB_SERVER,
@@ -187,19 +186,19 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'static/media/')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-#Cart session ID
+# Cart session ID
 CART_SESSION_ID = 'cart'
 
-#Custom user model
+# Custom user model
 AUTH_USER_MODEL = 'users.UserBase'
 LOGIN_REDIRECT_URL = '/users/dashboard'
 LOGIN_URL = '/users/login/'
 
-#Email setting
+# Email setting
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
-#Stripe payment
+# Stripe payment
 PUBLISHABLE_KEY = os.getenv('PUBLISHABLE_KEY')
 SECRET_KEY = os.getenv('SECRET_KEY_S')
 STRIPE_ENDPOINT_SECRET = os.getenv('STRIPE_ENDPOINT_SECRET')
-#stripe listen --forward-to localhost:8000/payment/webhook/
+# stripe listen --forward-to localhost:8000/payment/webhook/

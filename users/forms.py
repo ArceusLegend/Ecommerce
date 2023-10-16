@@ -4,6 +4,7 @@ from django.contrib.auth.forms import (AuthenticationForm, PasswordResetForm,
 
 from .models import UserBase
 
+
 class RegistrationForm(forms.ModelForm):
     user_name = forms.CharField(
         label='Enter Username', min_length=4, max_length=50, help_text='Required'
@@ -51,6 +52,7 @@ class RegistrationForm(forms.ModelForm):
         self.fields['password2'].widget.attrs.update(
             {'class': 'form-control', 'placeholder': 'Repeat Password'})
 
+
 class UserLoginForm(AuthenticationForm):
 
     username = forms.CharField(widget=forms.TextInput(
@@ -62,6 +64,7 @@ class UserLoginForm(AuthenticationForm):
             'id': 'login-pwd',
         }
     ))
+
 
 class UserEditForm(forms.ModelForm):
 
@@ -86,6 +89,7 @@ class UserEditForm(forms.ModelForm):
         self.fields['user_name'].required = True
         self.fields['email'].required = True
 
+
 class PwdResetForm(PasswordResetForm):
     email = forms.EmailField(max_length=254, widget=forms.TextInput(
         attrs={'class': 'form-control mb-3', 'placeholder': 'Email', 'id': 'form-email'}))
@@ -97,7 +101,8 @@ class PwdResetForm(PasswordResetForm):
             raise forms.ValidationError(
                 'Unfortunatley we can not find that email address')
         return email
-    
+
+
 class PwdResetConfirmForm(SetPasswordForm):
     new_password1 = forms.CharField(
         label='New password', widget=forms.PasswordInput(

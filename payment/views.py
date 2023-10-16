@@ -1,4 +1,5 @@
 import json
+import os
 
 import stripe
 from django.contrib.auth.decorators import login_required
@@ -6,9 +7,13 @@ from django.http.response import HttpResponse
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic.base import TemplateView
+from dotenv import load_dotenv
 
 from cart.cart import Cart
 from orders.views import payment_confirmation
+
+load_dotenv()
+
 
 @login_required
 def CartView(request):
@@ -18,14 +23,15 @@ def CartView(request):
     total = total.replace('.', '')
     total = int(total)
 
-    stripe.api_key = 'sk_test_51Nf9XtC7XxoqCynJyx4R39qfOh7RRzalAsWF3CVfvBAGPRuoL5ll0Zfjaby7jI9MuXBGNqhTPUHDVx4Zu47pjvEF00IeqZNcgZ'
+    stripe.api_key = os.getenv('SECRET_KEY_S')
     intent = stripe.PaymentIntent.create(
-        amount = total,
-        currency = 'eur',
-        metadata = {'userid': request.user.id}
+        amount=total,
+        currency='eur',
+        metadata={'userid': request.user.id}
     )
 
     return render(request, 'payment/pay_home.html', {'client_secret': intent.client_secret})
+
 
 @csrf_exempt
 def stripe_webhook(request):
@@ -47,6 +53,7 @@ def stripe_webhook(request):
     else:
         print('Unhandled event type {}'.format(event.type))
     return HttpResponse(status=200)
+
 
 def order_placed(request):
     cart = Cart(request)

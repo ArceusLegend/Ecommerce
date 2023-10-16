@@ -70,7 +70,7 @@ class Cart():
             shipping = Decimal(0.00)
         else:
             shipping = Decimal(11.50)
-        
+
         total = subtotal + Decimal(shipping)
         return total
 

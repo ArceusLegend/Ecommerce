@@ -7,4 +7,3 @@ app_name = 'orders'
 urlpatterns = [
     path('add/', views.add, name='add'),
 ]
-

@@ -1,6 +1,5 @@
-from django.db import models
-from decimal import Decimal
 from django.conf import settings
+from django.db import models
 
 from store.models import Product
 
@@ -21,9 +20,10 @@ class Order(models.Model):
 
     class Meta:
         ordering = ('-created',)
-    
+
     def __str__(self):
         return str(self.created)
+
 
 class OrderItem(models.Model):
     order = models.ForeignKey(Order,
@@ -37,5 +37,3 @@ class OrderItem(models.Model):
 
     def __str__(self):
         return str(self.id)
-    
-    
