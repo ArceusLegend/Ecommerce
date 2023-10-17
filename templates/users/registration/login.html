@@ -11,7 +11,7 @@
                         <div class="row">
                             <div class="col-12 col-lg-6  mx-auto">
                                 <form class="account-form p-4 rounded"
-                                      action="{% url 'account:login' %}"
+                                      action="{% url 'users:login' %}"
                                       method="post">
                                     {% csrf_token %}
                                     <h3 class="mb-4">Sign In</h3>
@@ -29,14 +29,14 @@
                                                 value="Log-in">Sign in</button>
                                     </div>
                                     <p class="text-center pb-3">
-                                        <a href="{% url "account:register" %}">Create an account</a>
+                                        <a href="{% url "users:register" %}">Create an account</a>
                                     </p>
                                 </form>
                                 <p class="small text-center pt-4">
                                     {% comment %} <a href="{% url "password_reset" %}">Forgotten Password?</a> {% endcomment %}
                                 </p>
                                 <p class="small text-center">
-                                    {% comment %} <a href="{% url "accounts:register" %}">Help Center?</a> {% endcomment %}
+                                    {% comment %} <a href="{% url "users:register" %}">Help Center?</a> {% endcomment %}
                                 </p>
                             </div>
                         </div>

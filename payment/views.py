@@ -7,12 +7,10 @@ from django.http.response import HttpResponse
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic.base import TemplateView
-from dotenv import load_dotenv
+from django.conf import settings
 
 from cart.cart import Cart
 from orders.views import payment_confirmation
-
-load_dotenv()
 
 
 @login_required
@@ -22,7 +20,7 @@ def CartView(request):
     total = total.replace(".", "")
     total = int(total)
 
-    stripe.api_key = os.getenv("SECRET_KEY_S")
+    stripe.api_key = settings.STRIPE_SECRET_KEY
     intent = stripe.PaymentIntent.create(amount=total, currency="eur", metadata={"userid": request.user.id})
 
     return render(request, "payment/pay_home.html", {"client_secret": intent.client_secret})
