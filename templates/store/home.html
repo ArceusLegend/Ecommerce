@@ -1,9 +1,9 @@
 {% extends "../main.html" %}
 {% load static %}
-{% block title %}Home{% endblock %}
+{% block title %}Home{% endblock title %}
 
 {% block content %}
-    <section class = "py-5 text-center container">
+    <section class="py-5 text-center container">
       <div id="carousel" class="carousel slide" data-bs-ride="carousel">
         <div class="carousel-indicators">
           <button type="button" data-bs-target="#carousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
@@ -17,14 +17,14 @@
             {% if user.is_authenticated %}
             <svg class="bd-placeholder-img bd-placeholder-img-lg d-block w-100" width="800" height="400" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Zeroth slide" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#777"></rect><text x="50%" y="50%" fill="#555" dy=".3em">Something</text></svg>
             {% else %}
-            <div class = "row py-lg-5">
-              <div class = "col-lg-6 col-md-8 mx-auto">
-                  <h1 class = "h1 fw-bold">Search, Read, Buy, Review</h1>
-                  <p class = "lead text-muted">
+            <div class="row py-lg-5">
+              <div class="col-lg-6 col-md-8 mx-auto">
+                  <h1 class="h1 fw-bold">Search, Read, Buy, Review</h1>
+                  <p class="lead text-muted">
                     Browse a massive collection of books, from many different authors, categories, with picks suitable for all ages.
                   </p>
                   <p>
-                      <a href = "{% url 'users:login' %}" class = "btn btn-primary my-2">Make an account</a>
+                      <a href="{% url 'users:login' %}" class="btn btn-primary my-2">Make an account</a>
                   </p>
               </div>
             </div>
@@ -52,19 +52,19 @@
       </div>
     </section>
 
-    <div class = "album py-5 bg-light">
-        <div class = "container">
-            <div class = "pb-3 h5" id = "home">All books</div>
+    <div class="album py-5 bg-light">
+        <div class="container">
+            <div class="pb-3 h5" id="home">All books</div>
             <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
 
                 {% for product in products %}
 
                 <div class="col">
                   <div class="card shadow-sm">
-                    <img class = "img-fluid" alt = "Responsive image" src = "{{ product.image.url }}" />
+                    <img class="img-fluid" width="200px" height="350px" alt="Responsive image" src="{{ product.image.url }}" />
                     <div class="card-body">
                       <p class="card-text">
-                        <a class = "text-dark text-decoration-none" href = "{{ product.get_absolute_url }}">{{ product.title }}</a>
+                        <a class="text-dark text-decoration-none" href="{{ product.get_absolute_url }}">{{ product.title }}</a>
                     </p>
                       <div class="d-flex justify-content-between align-items-center">
                         <small class="text-body-secondary">9 minute read</small>
@@ -78,4 +78,4 @@
             </div>
         </div>
     </div>
-{% endblock %}
+{% endblock content %}

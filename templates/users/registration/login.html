@@ -1,5 +1,5 @@
 {% extends "../../main.html" %}
-{% block title %}Log-in{% endblock %}
+{% block title %}Log-in{% endblock title %}
 {% block content %}
 
 <div class="container-fluid">
@@ -20,11 +20,11 @@
                                 </div>
                                 {% endif %}
 
-                                <label class="form-label">{{ form.username.label}}</label>
-                                {{ form.username}}
+                                <label class="form-label">{{ form.username.label }}</label>
+                                {{ form.username }}
 
-                                <label class="form-label">{{ form.password.label}}</label>
-                                {{ form.password}}
+                                <label class="form-label">{{ form.password.label }}</label>
+                                {{ form.password }}
                                 <div class="d-grid gap-2">
                                     <input type="hidden" name="next" value="{{ next }}">
                                     <button class="btn btn-primary py-2 mb-4 mt-5 fw-bold" type="submit" value="Log-in">Sign in
@@ -48,4 +48,4 @@
         </div>
     </div>
 </div>
-{% endblock %}
+{% endblock content %}

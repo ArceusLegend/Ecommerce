@@ -1,0 +1,9 @@
+[tool.black]
+exclude = '(\.git|\.venv|\.mypy_cache)'
+include = '\.pyi?$'
+line-length = 132
+target-version = ['py39']
+
+[tool.djlint]
+ignore = "H021"
+profile = "django"
