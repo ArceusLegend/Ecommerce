@@ -4,39 +4,38 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('users', '0002_alter_userbase_email'),
+        ("users", "0002_alter_userbase_email"),
     ]
 
     operations = [
         migrations.AlterModelOptions(
-            name='userbase',
-            options={'verbose_name': 'Accounts', 'verbose_name_plural': 'Accounts'},
+            name="userbase",
+            options={"verbose_name": "Accounts", "verbose_name_plural": "Accounts"},
         ),
         migrations.AlterField(
-            model_name='userbase',
-            name='about',
-            field=models.TextField(blank=True, max_length=500, verbose_name='about'),
+            model_name="userbase",
+            name="about",
+            field=models.TextField(blank=True, max_length=500, verbose_name="about"),
         ),
         migrations.AlterField(
-            model_name='userbase',
-            name='email',
-            field=models.EmailField(max_length=254, unique=True, verbose_name='email address'),
+            model_name="userbase",
+            name="email",
+            field=models.EmailField(max_length=254, unique=True, verbose_name="email address"),
         ),
         migrations.AlterField(
-            model_name='userbase',
-            name='first_name',
+            model_name="userbase",
+            name="first_name",
             field=models.CharField(blank=True, max_length=150),
         ),
         migrations.AlterField(
-            model_name='userbase',
-            name='phone_number',
+            model_name="userbase",
+            name="phone_number",
             field=models.CharField(blank=True, max_length=15),
         ),
         migrations.AlterField(
-            model_name='userbase',
-            name='user_name',
+            model_name="userbase",
+            name="user_name",
             field=models.CharField(max_length=150, unique=True),
         ),
     ]

@@ -7,3 +7,4 @@ media/
 .env
 venv
 assets/
+.mypy_cache
