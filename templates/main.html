@@ -25,7 +25,7 @@
         <!--START NAV-BAR-->
         <nav class="navbar navbar-expand-lg bg-body-tertiary" data-bs-theme="dark">
             <div class="container-fluid">
-                <a class="navbar-brand" href="{% url "store:home" %}">Bookstore</a>
+                <a class="navbar-brand" href="#">Bookstore</a>
                 <button class="navbar-toggler"
                         type="button"
                         data-bs-toggle="collapse"
@@ -45,7 +45,7 @@
                                aria-expanded="false">Library</a>
                             <ul class="dropdown-menu">
                                 <li>
-                                    <a class="dropdown-item" href="{% url "store:home" %}">All</a>
+                                    <a class="dropdown-item" href="#">All</a>
                                 </li>
                                 {% for c in categories %}
                                     <li>
