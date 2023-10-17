@@ -196,7 +196,7 @@ LOGIN_URL = "/users/login/"
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
 # Stripe payment
-PUBLISHABLE_KEY = os.getenv("PUBLISHABLE_KEY")
-SECRET_KEY = os.getenv("SECRET_KEY_S")
-STRIPE_ENDPOINT_SECRET = os.getenv("STRIPE_ENDPOINT_SECRET")
+PUBLISHABLE_KEY = os.getenv("PUBLISHABLE_KEY", "")
+SECRET_KEY = os.getenv("SECRET_KEY_S", "")
+STRIPE_ENDPOINT_SECRET = os.getenv("STRIPE_ENDPOINT_SECRET", "")
 # stripe listen --forward-to localhost:8000/payment/webhook/
