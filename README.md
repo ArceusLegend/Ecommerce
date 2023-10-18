@@ -26,6 +26,7 @@ To set-up and deploy the Django project with default (development) configuration
     ```
     python manage.py runserver 0.0.0.0:8000
     ```
+    *Make sure you add 0.0.0.0 or any other host you use to the `ALLOWED_HOSTS` list if you want to use that host, otherwise just use localhost or 127.0.0.1
 
 Note that the .env file contains settings for setting-up Stripe and different
 options for Databases (see later sections for more information)
