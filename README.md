@@ -1,19 +1,34 @@
 # Ecommerce
 A Django project to build an online bookstore. Built with Django, Bootstrap, and JQuery
 
-# Quick-start guide
+# Quick-Start
+Pre-requisites:
 
-This is a quick rundown of necessary steps to set up the project for both development and production. This is dedicated for the more experienced developers, and the steps will be described in more detail below.
+- Python >= 3.10
 
-- Create a virtual environment (`python -m venv ./venv` to create a new folder on the current directory called venv and then build the env there)
-- Enable the virtual environment (if using the above example, run `venv/Scripts/Activate`)
-- Download all the packages listed in requirements.txt (`pip install -r requirements.txt`)
-- Create .env file in the project's root directory to store envvars
-- Create a new envvar called `SECRET_KEY_D`. This is the Django SECRET_KEY value that you'll find in settings.py. Make sure it's a large, randomized value.
-- Choose a database by creating a new envvar called `DATABASE_ENGINE`. By default it's SQLite and you don't need to change anything if that's what you want. You can assign 'postgres' to the variable if you want to use PostgreSQL, 'mysql' if you want use MySQL, or add support for another engine in settings.py and assigning a correlated string to the envvar.
-- Run the migrations (`python -m manage.py migrate`) to create a database in the engine of your choosing with tables mapped by the models in the code. The migrations should already be provided with the code.
-- This project uses Stripe to process payments. To get it work, make an account [here](https://dashboard.stripe.com/register), navigate to your dashboard, and fetch the API keys and webhook secret key. Add them as envvars in your .env file ('PUBLISHABLE_KEY' for the publishable key, 'SECRET_KEY_S' for the secret key, and 'STRIPE_ENDPOINT_SECRET' for the webhook secret key).
-- The project is now ready to work in development mode. To deploy it in production mode, first go through [this](https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/) checklist to ensure it's safe to do so. Once that is done, you can use whatever method you want to deploy it. This project uses Waitress, so if you want to deploy it with this package you can simply run the serve.py script
+It's highly advised to use a virtual environment for this project (e.g. with `python -m venv ./venv`)
+
+To set-up and deploy the Django project with default (development) configurations:
+
+- Install Python requirements
+    ```
+    pip install -r requirements.txt
+    ```
+- Create an .env file by copying the template provided (see later sections
+    ```
+    cp .env.template .env
+    ```
+- Run migrations to create the database
+    ```
+    python manage.py migrate
+    ```
+- Start the dev server
+    ```
+    python manage.py runserver 0.0.0.0:8000
+    ```
+
+Note that the .env file contains settings for setting-up Stripe and different
+options for Databases (see later sections for more information)
 
 # Set up
 For this project to work properly, before starting the server, you will need to first create a virtual environment and then download all the assets listed in requirements.txt. Afterwards you'll need to run some migrations for Django to build a database (by default in SQLite3), make a .env file for any secret keys you don't want in the actual code, and then finally enable Stripe for payments to work. Optionally, you can also relocate the media folder.
