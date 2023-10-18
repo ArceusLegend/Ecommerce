@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 import os
 from pathlib import Path
+from urllib.parse import urlparse
 
 from django.core.exceptions import ImproperlyConfigured
 from dotenv import load_dotenv
@@ -34,7 +35,24 @@ SECRET_KEY = os.getenv("SECRET_KEY_D", "")
 DEBUG = os.getenv("DEBUG", "false").lower() == "true"
 
 # Must have a valid value if DEBUG = False
-ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
+
+HOST_URL = os.getenv("HOST_URL")
+if HOST_URL:
+    ALLOWED_HOSTS = [urlparse(HOST_URL).netloc]
+    CSRF_TRUSTED_ORIGINS = [HOST_URL]
+    SECURE_SSL_REDIRECT = True
+    SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+    CORS_ALLOWED_ORIGINS = [
+        "https://storage.googleapis.com",
+        HOST_URL,
+    ]
+else:
+    ALLOWED_HOSTS = ["*"]
+    CORS_ORIGIN_ALLOW_ALL = True
+
+if DEBUG:
+    ALLOWED_HOSTS = ["*"]
+    CORS_ORIGIN_ALLOW_ALL = True
 
 
 # Application definition

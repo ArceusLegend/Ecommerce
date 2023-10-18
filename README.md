@@ -115,9 +115,9 @@ To deploy the project in a production environment, you can go through the follow
 
    Enabling the DEBUG option is great for your development environment, but not so much for production. If there is an error somewhere that causes a traceback to occur, you are given a lot of potentially sensitive information about your code, and you certainly don't want that leaking to any unwanted parties. It is set to False by default in settings.py, but you can enable it again in your .env file.
 
-3) **Allowed hosts**
-
-   If `DEBUG` is set to `False`, Django can't run without at least one valid value in the `ALLOWED_HOSTS` list. This list is required to protect against CSRF attacks. In this project, the list has already got 'localhost' and '127.0.0.1' in it, but you can also add your own domain name as well.
+3) **set HOST_URL**
+   Set the environment variable HOST_URL to the service root url (e.g. "https://ecommerce-demo-shop.com").
+   This ensures security by blocking requests from unallowed hosts and configuring CORS and https redirects
 
    As an extra security feature, you can also set up the web server in front of Django to respond with a static error page or ignore requests for incorrect hosts instead of forwarding the request to Django. This way you’ll avoid spurious errors in your Django logs (or emails if you have error reporting configured that way).
 
