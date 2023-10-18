@@ -1,5 +1,5 @@
 [tool.black]
-exclude = '(\.git|\.venv|\.mypy_cache)'
+exclude = '(\.git|\venv|\.mypy_cache)'
 include = '\.pyi?$'
 line-length = 132
 target-version = ['py39']
