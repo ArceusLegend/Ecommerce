@@ -8,3 +8,4 @@ media/
 venv
 assets/
 .mypy_cache
+.idea/
