@@ -20,9 +20,17 @@ jobs:
             with:
                 python-version: "3.11"
 
-          - name: Install linting dependencies
-            run: pip install black flake8 mypy isort djlint
+          - name: Install dependencies
+            run: pip install -r requirements.txt
 
           - name: Run lint checks
-            uses: wearerequired/lint-action@v2
-            # TODO: Script for above packages
+            run: isort --diff --check .
+                 black --diff --check --color .
+                 flake8 .
+                 mypy .
+                 djlint --lint --check .
+          
+          - name: Run lint formatting
+            run: isort .
+                 black .
+                 djlint --reformat .
