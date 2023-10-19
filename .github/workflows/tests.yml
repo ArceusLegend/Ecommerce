@@ -24,11 +24,12 @@ jobs:
             run: pip install -r requirements.txt
 
           - name: Run lint checks
-            run: isort --diff --check .
-                 black --diff --check --color .
-                 flake8 .
-                 mypy .
-                 djlint --lint --check .
+            run: |
+              isort --diff --check .
+              black --diff --check --color .
+              flake8 .
+              mypy .
+              djlint --lint --check .
           
           - name: Run lint formatting
             run: isort .
