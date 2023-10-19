@@ -30,7 +30,7 @@ jobs:
               black --diff --check --color .
               echo Run flake8 .
               flake8 .
-              Run mypy .
+              echo Run mypy .
               mypy .
               echo Run djlint --lint --check .
               djlint --lint --check .
