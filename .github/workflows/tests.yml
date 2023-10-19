@@ -26,12 +26,19 @@ jobs:
           - name: Run lint checks
             run: |
               isort --diff --check .
+              echo Run black --diff --check --color .
               black --diff --check --color .
+              echo Run flake8 .
               flake8 .
+              Run mypy .
               mypy .
+              echo Run djlint --lint --check .
               djlint --lint --check .
           
           - name: Run lint formatting
-            run: isort .
-                 black .
-                 djlint --reformat .
+            run: |
+              isort .
+              echo Run black .
+              black .
+              echo djlint --reformat .
+              djlint --reformat .
