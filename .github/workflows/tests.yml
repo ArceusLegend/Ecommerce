@@ -18,10 +18,27 @@ jobs:
           - name: Build python environment
             uses: actions/setup-python@v1
             with:
-                python-version: 3.10
+                python-version: "3.11"
 
-          - name: Install linting dependencies
-            run: pip install black flake8 mypy isort djlint
+          - name: Install dependencies
+            run: pip install -r requirements.txt
 
           - name: Run lint checks
-            uses: wearerequired/lint-action@v2
+            run: |
+              isort --diff --check .
+              echo Run black --diff --check --color .
+              black --diff --check --color .
+              echo Run flake8 .
+              flake8 .
+              echo Run mypy .
+              mypy .
+              echo Run djlint --lint --check .
+              djlint --lint --check .
+          
+          - name: Run lint formatting
+            run: |
+              isort .
+              echo Run black .
+              black .
+              echo djlint --reformat .
+              djlint --reformat .
