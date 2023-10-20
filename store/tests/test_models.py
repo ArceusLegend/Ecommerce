@@ -28,15 +28,17 @@ class TestCategoriesModel(TestCase):
 
 class TestProductsModel(TestCase):
     def setUp(self):
-        Category.objects.create(name="django", slug="django")
-        UserBase.objects.create(user_name="admin")
+        self.category1 = Category.objects.create(name="django", slug="django")
+        self.category2 = Category.objects.create(name='javascript', slug='js')
+        self.user1 = UserBase.objects.create(user_name="admin", email="admin@example.com")
+        self.user2 = UserBase.objects.create(user_name='admin2', email="admin2@example.com")
         self.data1 = Product.objects.create(
-            category_id=1, title="django beginners", created_by_id=1, slug="django-beginners", price="20.00", image="django"
+            category=self.category1, title="django beginners", created_by=self.user1, slug="django-beginners", price="20.00", image="django"
         )
         self.data2 = Product.objects.create(
-            category_id=1,
+            category=self.category2,
             title="django advanced",
-            created_by_id=1,
+            created_by=self.user2,
             slug="django-advanced",
             price="20.00",
             image="django",
@@ -66,4 +68,18 @@ class TestProductsModel(TestCase):
         Test product model custom manager returns only active products
         """
         data = Product.objects.all().filter(is_active=True)
+        self.assertEqual(data.count(), 1)
+
+    def test_product_categories(self):
+        """
+        Test that each selecting products by category only returns products in that category
+        """
+        data = Product.objects.all().filter(category=self.category1)
+        self.assertEqual(data.count(), 1)
+
+    def test_related_names(self):
+        """
+        Test that selecting products by `created_by` only returns products created by that user
+        """
+        data = Product.objects.all().filter(created_by=self.user1)
         self.assertEqual(data.count(), 1)
