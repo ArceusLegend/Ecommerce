@@ -57,14 +57,12 @@ class TestCartView(TestCase):
         """
         Test removing items from the cart
         """
-        response = self.client.post(
-            reverse('cart:cart_remove'), {"productid": 2, "action": "post"}, xhr=True)
-        self.assertEqual(response.json(), {'qty': 1, 'subtotal': '31.50'})
+        response = self.client.post(reverse("cart:cart_remove"), {"productid": 2, "action": "post"}, xhr=True)
+        self.assertEqual(response.json(), {"qty": 1, "subtotal": "31.50"})
 
     def test_cart_update(self):
         """
         Test updating items from the cart
         """
-        response = self.client.post(
-            reverse('cart:cart_update'), {"productid": 2, "productqty": 1, "action": "post"}, xhr=True)
-        self.assertEqual(response.json(), {'qty': 2, 'subtotal': '51.50'})
+        response = self.client.post(reverse("cart:cart_update"), {"productid": 2, "productqty": 1, "action": "post"}, xhr=True)
+        self.assertEqual(response.json(), {"qty": 2, "subtotal": "51.50"})
