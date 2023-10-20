@@ -1,7 +1,7 @@
 from django.test import TestCase
 from django.urls import reverse
 
-from store.models import Category, Product
+from store.models import Category
 from users.models import UserBase
 
 
