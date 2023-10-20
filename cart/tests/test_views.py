@@ -10,30 +10,30 @@ class TestCartView(TestCase):
         self.user1 = UserBase.objects.create(user_name="admin", email="a@a.com")
         self.user2 = UserBase.objects.create(user_name="admin2", email="b@b.com")
         self.category1 = Category.objects.create(name="django", slug="django")
-        data1 = Product.objects.create(
-            category=self.category1,
-            title="django beginners",
-            created_by=self.user1,
-            slug="django-beginners",
-            price="20.00",
-            image="django",
-        )
-        data2 = Product.objects.create(
-            category=self.category1,
-            title="django intermediate",
-            created_by=self.user1,
-            slug="django-beginners",
-            price="20.00",
-            image="django",
-        )
-        data3 = Product.objects.create(
-            category=self.category1,
-            title="django advanced",
-            created_by=self.user1,
-            slug="django-beginners",
-            price="20.00",
-            image="django",
-        )
+        # data1 = Product.objects.create(
+        #     category=self.category1,
+        #     title="django beginners",
+        #     created_by=self.user1,
+        #     slug="django-beginners",
+        #     price="20.00",
+        #     image="django",
+        # )
+        # data2 = Product.objects.create(
+        #     category=self.category1,
+        #     title="django intermediate",
+        #     created_by=self.user1,
+        #     slug="django-beginners",
+        #     price="20.00",
+        #     image="django",
+        # )
+        # data3 = Product.objects.create(
+        #     category=self.category1,
+        #     title="django advanced",
+        #     created_by=self.user1,
+        #     slug="django-beginners",
+        #     price="20.00",
+        #     image="django",
+        # )
         self.client.post(reverse("cart:cart_add"), {"productid": 1, "productqty": 1, "action": "post"}, xhr=True)
         self.client.post(reverse("cart:cart_add"), {"productid": 2, "productqty": 2, "action": "post"}, xhr=True)
 
