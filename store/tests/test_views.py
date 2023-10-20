@@ -19,7 +19,6 @@ class TestViewResponses(TestCase):
             category=category1, title="django beginners", created_by=user, slug="django-beginners", price="20.00", image="django"
         )
 
-
     def test_homepage_url(self):
         """
         Test homepage response status
