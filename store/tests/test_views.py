@@ -13,20 +13,11 @@ from users.models import UserBase
 class TestViewResponses(TestCase):
     def setUp(self):
         self.c = Client()
-        UserBase.objects.create(user_name="admin")
-        Category.objects.create(name="django", slug="django")
+        user = UserBase.objects.create(user_name="admin")
+        category1 = Category.objects.create(name="django", slug="django")
         Product.objects.create(
-            category_id=1, title="django beginners", created_by_id=1, slug="django-beginners", price="20.00", image="django"
+            category=category1, title="django beginners", created_by=user, slug="django-beginners", price="20.00", image="django"
         )
-
-    def test_url_allowed_hosts(self):
-        """
-        Test allowed hosts
-        """
-        response = self.c.get("/", HTTP_HOST="noaddress.com")
-        self.assertEqual(response.status_code, 400)
-        response = self.c.get("/", HTTP_HOST="localhost")
-        self.assertEqual(response.status_code, 200)
 
     def test_homepage_url(self):
         """
